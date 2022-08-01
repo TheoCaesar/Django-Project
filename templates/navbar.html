@@ -1,0 +1,62 @@
+<!--this is going to be used to demonstrate how template inheritance works
+    now that we are done with the creation, we are going to use the include tag in our other html docs-->
+{% load static %}
+
+    <!-- Header Section -->
+  <header class="header">
+    <div class="container container--narrow">
+<!-- before       <a href="/" class="header__logo">     so you see the  logo is hyperlinked to send us to our homepage... hence the empty href attribute-->  
+    <a href="{% url 'fprojq' %}" class="header__logo">  <!-- we have now altered the above line to click and take us to our homepage.-->
+        <img src="{% static 'images/logo.svg' %}" alt="DevSearch Logo" />
+      </a>
+      
+      <nav class="header__nav"> 
+        <input type="checkbox" id="responsive-menu" />
+        <label for="responsive-menu" class="toggle-menu">
+          <span>Menu</span>
+          <div class="toggle-menu__lines"></div>
+        </label>
+        <ul class="header__menu">
+
+            <!-- all the links below in the li tags reference static pages so tutor asks we clear them and come back to fill em later-->
+
+<!--before          <li class="header__menuItem"><a href="index.html">Developers</a></li> -->
+          <li class="header__menuItem"><a href="{% url 'profiles_link' %}">Developers</a></li>
+
+<!--before         <li class="header__menuItem"><a href="projects.html">Projects</a></li>-- should be the same as what the logo's click will get us...--> 
+          <li class="header__menuItem"><a href="{% url 'fprojq' %}">Projects</a></li>
+  
+<!-- before         <li class="header__menuItem"><a href="inbox.html">Inbox</a></li>-->
+ 
+  
+<!--before           <li class="header__menuItem"><a href="account.html">My Account</a></li>-->
+ <!--17 feb 2022 - messageiing functionality  ==>   <li class="header__menuItem"><a href="">Inbox</a>     </li>-->
+
+
+<!--the last list member below was requested by tutor...and didnt come from oour index static.. we will use it later, but till then we alter the li tag above to add project-->
+<!-- 20/11/21 12:27 noon -->
+{% if request.user.is_authenticated %} <!--request.user.is_authenticated is fixed...need not change anything...-->
+<li class="header__menuItem"><a href="{% url 'inbox' %}">Inbox</a></li>
+<!-- <li class="header__menuItem"><a href="{% url 'useraccount' %}">My Account</a></li> same as ;line below -->
+<!--  22/12/21   li class="header__menuItem"><a href="{% url 'createproject' %} " class="btn btn--sub">Create Project</a></li-->
+
+<li class="header__menuItem"><a href="{% url 'useraccount' %} " class="btn btn--sub">My Account</a></li>
+
+
+<li class="header__menuItem"><a href="{% url 'logoutlink' %}" class="btn btn--sub">Logout</a></li>
+{% else %}          
+<li class="header__menuItem"><a href="{% url 'loginlink' %}" class="btn btn--sub">Login/Sign Up</a></li>
+{% endif %}
+
+        
+        </ul>
+      </nav>
+    </div>
+  </header>
+<!--    all below becomes waste...we used to test before now. 
+  <div> 
+        <a href="{% url 'createproject' %}">  Add Project  </a>  
+    </div>
+        
+        <hr>
+</html-->

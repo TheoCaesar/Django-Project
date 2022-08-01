@@ -1,0 +1,29 @@
+{% if queryset.has_other_pages %} <!-- in case tehre only is 1 page showing all projects, no need to indicate the page number-->
+<div class = 'pagination'>
+  <ul class = 'container'>
+    
+    <!-- for the previous button...note how it comes b4 the end for -->
+
+    {% if queryset.has_previous %}
+    <li> <a href="?page={{queryset.previous_page_number}}" class ='btn page-link' data-page = '{{queryset.previous_page_number}}'>&#10094; Prev</a></li>
+    {% endif %}
+    
+    {% for each in custom_range %}
+
+    {% if page == queryset.number %}
+    <li><a href="?page={{each}}" class = 'btn page-link btn--sub' data-page = '{{each}}' >{{each}}</a></li> <!--color differentiation-->
+
+    {% else %}
+    <li><a href="?page={{each}}" class = 'btn page-link' data-page = '{{each}}' >{{each}}</a></li>
+    {% endif %}
+    {% endfor %}
+    
+    <!-- for the next button...note how it comes after the end for -->
+    {% if queryset.has_next %}
+    <li> <a href="?page={{queryset.next_page_number}}" class ='btn page-link' data-page = '{{queryset.next_page_number}}'>Next &#10095;</a></li>
+    {% endif %}
+  </ul>
+</div>
+
+{% endif %}
+

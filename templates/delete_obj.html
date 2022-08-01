@@ -1,0 +1,33 @@
+{% extends 'main.html' %}
+
+{% block content %}
+<!-- <form action = '' method = 'POST'>  <!- the purpose of the form is to confirm our deletion for us ->
+    {% csrf_token %}            <!-- without it error!!->
+    <p style = "text-align: center;">   Are you sure you want to delete this {{del_tempvar}}..??? </p>
+    
+    <a href="{% url 'fprojq' %}" >    Go back   </a>    
+    
+    <input type='submit'    value = 'Confirm'> 
+</form> -->
+
+ <!-- Main Section -->
+ <main class="formPage my-xl">
+    <div class="content-box">
+        <div class="formWrapper">
+            <a class="backButton" href="#"><i class="im im-angle-left"></i></a>
+            <br>
+
+            <form class="form" method="POST" action="">
+                {% csrf_token %}
+                <p>   Are you sure you want to delete this {{del_tempvar}}..??? </p>
+
+    
+                <a class="btn btn--sub btn--lg  my-md" href="{{request.GET.next}}" >    Go back   </a>    
+ 
+                <input class="btn btn--sub btn--lg  my-md" type="submit" value="Confirm" />
+            </form>
+        </div>
+    </div>
+</main>
+
+{% endblock %}

@@ -1,0 +1,65 @@
+{% load static %}
+<!DOCTYPE html><!--to demonstrate the percent extends percent in curly braces tag-->
+
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      
+        <!-- Favicon -->
+        <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
+        <!-- Icon - IconMonster -->
+        <link rel="stylesheet" href="https://cdn.iconmonstr.com/1.3.0/css/iconmonstr-iconic-font.min.css" />
+        <!-- Mumble UI -->
+        <link rel="stylesheet" href="{% static 'uikit/styles/uikit.css' %}" /> 
+        <!-- Dev Search UI -->
+        <link rel="stylesheet" href="{% static 'styles/app.css' %}" />
+      
+        <title>DevSearch - Connect with Developers!</title>
+      </head>
+    <body>
+        <!--div>   
+            <h1>    This is  main or home page</h1>
+        </div-->
+
+        <div>
+            {%include 'navbar.html'%}
+        </div>
+
+            <!-- so we defile what django should do if it encounters a flash msg anywhere in hte function to be rendered in template
+            {% if messages %}
+            <ul class = 'messages'>
+                {% for message in messages %}
+                    <li {% if message.tags %} class = "{{ message.tags }}" {% endif %}> 
+                        {{message}}
+                    </li>
+                {% endfor %}
+            </ul>
+            {% endif %}-->
+
+            <!-- 22/12/21 16:45 -->
+            {% if messages %}
+            {% for message in messages %}
+                <!-- this piece of code comes from the uikit documentation-- in the themes folder, uikit/index.html-->
+                <div class = 'alert' alert--{{message.tags}}> <!--for styling purposes error msgs should be red and success green and info blue, in our views.py we updated the alert messages, success, error etc so we neeed to update the class-->
+                    <p class = "alert__message">{{message}}</p>
+                    <button class = 'alert__close'>x</button>
+                </div>
+            {% endfor %}
+            {% endif %}
+
+        <!-- it is within this that every page which will bear the extends tag will be placed -->
+
+            {% block content %}
+
+
+
+
+            {%  endblock content %}
+ 
+        </body>
+        <script src="{% static 'uikit/app.js' %}"></script>
+        <script src="{% static 'js/main.js' %}"></script>
+
+</html>
