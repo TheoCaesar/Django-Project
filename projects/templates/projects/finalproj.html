@@ -1,0 +1,120 @@
+{% extends 'main.html' %}
+<!--so this should contain the details of each project-->
+{% block content %}<!--
+{% for var in var_projModel %}
+<p>   
+     <a href ="{% url 'fprojren' var.id %}"> <!- we pass in the link to our finprojren html to create a page for each course and render it. so far all works fine but for the rendering which lacks the datum to be displayed in the block content....figured it out after bout 15 mins,,,there was a case sensitivity issue with the variables in the template and dt in the views->
+         {{ var }}   
+     </a>
+</p><br>
+{%endfor%}-->
+
+
+<!--
+<!-previous_comment: now that our thing seems to be working how about we display em all in a table beautifully rendered->
+<table>
+    <tr>
+        <th> UUID</th>
+        <th>   Project Name </th>
+        <th>    Project description     </th>
+        <th>    Pro Votes (%)  </th>
+        <th>    Total Votes</th>
+        <th>    Created </th>
+
+    </tr>   <! previous comment: So this row is going to be the first and decdicated to our headers->
+
+    {% for i in var_projModel %}
+    <tr>  
+        <td>    {{i.id}}             </td> 
+        <td>    {{i.title}}          </td>
+        <td>    {{i.description}}    </td>
+        <td>    {{i.vote_ratio}}%    </td>
+        <td>    {{i.vote_total}}     </td>
+        <td>    {{i.created}}        </td>
+        <td> <a href="{% url 'fprojren' i.id %}">  {{i}} page   </a>         </td>
+        <td> <a href = "{% url 'updateproject' i.id %}"> Edit   </a></td>
+        <td> <a href="{%  url 'deleteproject' i.id  %}">    Delete </a></td>
+    </tr>
+    {%endfor%}
+</table>
+so we copied the main section of our static project.html and deleted all but main class called project, which i think renders our search button and just one div class column, before which we placed our for loop around...@ the end of which
+our endfor tag came, our i in the for loop is for each project in the database, it is to display the title, vote total, ratio, and tags as well as owner of the project...tried to have both and new/edited lines in here for all to see...
+ -->
+<!-- from static project.html-->
+ <!-- Main Section -->
+ <main class="projects">
+    <section class="hero-section text-center">
+      <div class="container container--narrow">
+        <div class="hero-section__box">
+          <h2>Search for <span>Projects</span></h2>
+        </div>
+
+        <div class="hero-section__search">
+          <form id = 'searchForm' class="form" action="{% url 'fprojq' %} " method="get">
+            <div class="form__field">
+              <label for="formInput#search">Search By Projects </label>
+              <input class="input input--text" id="formInput#search" type="text" name="search_query"
+                placeholder="Search by Project Title"value = {{tempvar_searchquery}}  >
+            </div>
+
+            <input class="btn btn--sub btn--lg" type="submit" value="Search" />
+          </form>
+        </div>
+      </div>
+    </section>
+    <!-- Search Result: DevList -->
+    <section class="projectsList">
+      <div class="container">
+        <div class="grid grid--three">
+        
+        <!-- our last card; we will have to wrap this card in a for loop
+        which we will copy from our now commented table... be sure to add endfor tag..-->
+        {% for i in var_projModel %}
+           <div class="column">
+            <div class="card project">
+<!-- before   <a href="single-project.html" class="project">   -->
+              <a href="{% url 'fprojren' i.id %}" class="project">
+                <img class="project__thumbnail" src="{{i.featured_img.url}}" alt="project thumbnail"/>
+                <div class="card__body">
+                    <!-- we are having trouble displaying project specific images so we move without them for now...
+                        all was in the 001 video with the checksum error, django ecommerce projects should sort that out -->
+
+<!-- before       <h3 class="project__title">Yoga Studio Landing Page Website and Design</h3>   --> 
+                  <h3 class="project__title">{{i.title}}</h3>
+
+  <!--we dont have a user profile so we leave this shit & altter the link as clicking it is expected to render that particular page of the project for now    
+                  <p><a class="project__author" href="profile.html">By Dennis Ivanov</a></p>-->
+<!-- 17/11/ 10:08 p><a class="project__author" href="{% url 'fprojren' i.id %}">By Dennis Ivanov</a></p=-->
+                  <p><a class="project__author" href="{% url 'user_profile_link' i.owner.id %}">By {{i.owner.name}}</a></p>
+
+        
+                  <p class="project--rating">
+                    <span style="font-weight: bold;">{{i.vote_ratio}}%</span> Postitive
+                    Feedback ({{i.vote_total}} Votes)
+                  </p>
+
+                 
+                  <div class="project__tags">
+                     {% for tag in i.tags.all %}
+                    <span class="tag tag--pill tag--main">
+                      <small>{{tag}}</small>
+                    </span>
+                   {%endfor%}
+                  </div>
+                </div>
+              </a>
+            </div>
+          </div>
+        {% endfor %}
+        
+        </div>
+      </div>
+    </section>
+
+    <!--previous site for pagination code before transmission to  templates-->
+    {% include 'pagination.html' with queryset=var_projModel custom_range=temp_custom_range %}
+      <!--custom_range on the left is from the loop in pagination template and is assigned a value of the template variable from the views-->
+
+    </div>
+  </main>
+{% endblock %}

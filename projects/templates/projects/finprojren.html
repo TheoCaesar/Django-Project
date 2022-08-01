@@ -1,0 +1,110 @@
+ {% extends 'main.html' %}
+{% block content %}
+{{proJModel.featured_img.url}} 
+<h1>    {{proJModel.title}}    </h1> <hr>
+
+{%for i in proj_tags %} <!-- withour explicitly storing the query for tags in a variagle we can still go ahead and call our tags by simply ###    using our for tag to rep for i in project.tags, and it will still work just fine    ###-->
+<span>
+    {{i}}
+</span>
+
+{%endfor%}<hr>
+
+
+<p>     {{proJModel.description}}   </p>
+
+
+ <!-- Main Section -->
+ <main class="singleProject my-md">
+    <div class="container">
+      <div class="layout">
+        <div class="column column--1of3">
+          <h3 class="singleProject__subtitle">Tools & Stacks</h3>
+          <div class="singleProject__toolStack">
+            
+            {% for tag in proJModel.tags.all %}
+            <span class="tag tag--pill tag--sub tag--lg">
+              <small>{{tag}}</small>
+            </span>
+            {%endfor%}
+          </div>
+          
+          {% if project.source_link %}          <!-- if source link exists in database...render this link, we could duplicate this link for demolink -->
+          <a class="singleProject__liveLink" href="#" target="_blank"><i class="im im-external-link"></i>Source Code
+          </a>
+          {% endif %}
+        </div>
+
+
+        <div class="column column--2of3">
+          <img class="singleProject__preview" src="{{ proJModel.featured_img.url }}" alt="portfolio thumbnail" /> <!-- if we should figure out our imagefield in our model this is where it is to be referrenced-->
+        <!--   <a href="profile.html" class="singleProject__developer">Md. Shahriar Parvez</a>           yet to figure out the users-->
+          <a href="profile.html" class="singleProject__developer">{{projModel.owner.name}}</a>           <!-- yet to figure out the users-->
+          <h2 class="singleProject__title"> {{proJModel.title}} </h2>
+          <h3 class="singleProject__subtitle">About the Project</h3>
+          <div class="singleProject__info">
+            {{proJModel.description}}
+          </div>
+
+          <div class="comments">
+            <h3 class="singleProject__subtitle">Feedback</h3>
+            <h5 class="project--rating">
+              {{proJModel.vote_ratio}}% Postitive Feedback ({{proJModel.vote_total}} Votes)
+            </h5>
+
+          {% if request.user.profile.id in proJModel.voters %}
+              <p> You have already submitted a review for this project </p>
+            {% elif request.user.profile == proJModel.owner %}
+              <p>You cannot review your own work </p>
+            {% elif request.user.is_authenticated %}        
+            <form class="form" action="{% url 'fprojren' proJModel.id %}" method="POST">
+              <!-- Textarea -->
+              {% csrf_token %}
+              {% for field in tempvar_form %}
+              <div class="form__field">
+                <label for="formInput#textarea">{{field.label}}: </label>
+                {{field}}
+              </div>
+              {% endfor %}
+              <!-- <input class="btn btn--sub btn--lg" type="submit" value="Add Review" /> -->
+              <input class="btn btn--sub btn--lg" type="submit" value="Add Review" />
+
+            </form>
+            {% else %}
+              <a href="{% url 'loginlink' %}?next={{request.path}}"> <p>Login to submit review</p></a>
+               <!--the code out of the loginlink basically takes a snapshot of existing position before moving so you can return to it -->            
+            {% endif %}
+
+            <div class="commentList">
+              {% for each_review in proJModel.review_set.all %}
+              {% if each_review.body %}
+              <div class="comment">
+                <!-- <a href="profile.html"> -->
+                <a href="{% url 'fprojren' each_review.owner.id %}">
+
+                  <img class="avatar avatar--md"
+                    src="{{each_review.owner.profile_image.url}}" alt="user" />
+                  </a>
+
+                <div class="comment__details">
+                  <!-- <a href="profile.html" class="comment__author">Sulamita Ivanov</a> -->
+                <!--  <a href="{% url 'fprojren' each_review.owner.id %}" class="comment__author">{{each_review.owner.name}}</a> -->
+                  <a href="{% url 'user_profile_link' each_review.owner.id %}" class="comment__author">{{each_review.owner.name}}</a>
+
+
+                  <p class="comment__info">
+                    {{each_review.body|linebreaksbr}} <!--we filter and apply linebreaksbr -->
+                  </p>
+                </div>
+              </div>
+              {% endif %}
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+  </main>
+  
+  {% endblock content %}

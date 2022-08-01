@@ -1,0 +1,19 @@
+{% include 'navbar.html' %} <!-- this is for this html to inherit all from navbar, incl style-->
+<!DOCTYPE html>
+<html>
+    <!-- to make these templatees possible, we had to go into our settings.py to import os
+    some where at the top of the file to tell wher to locate these templates. From here we 
+    scrolled down to the templates list variable and placed the directory of our template folder 
+    with the help of the os.path.join() and passed in BASE_DIR  & templates folder as our argument
+    
+    from there we imported render from django.shortcuts to replace our HTTPresponses in our view.py 
+    and altered the return statements accordingly-->
+
+    <head>
+        <meta charset = 'utf-8'>
+        <title> Our Products</title>
+    </head>
+    <body>
+        <header> <div> <h1>Biskwadwos Auto Repair and Services  </h1> </div></header>
+    </body>
+</html>

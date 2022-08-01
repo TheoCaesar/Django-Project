@@ -1,0 +1,47 @@
+{% extends 'main.html' %}
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset = 'utf-8'>
+        <title> this is our homepage...</title>
+    </head>
+    <body>
+           {% block content %}
+            <p >     This is our {{our_name}} homepage</p>
+           {% for item in options %}
+                    <p style="text-indent: 25px;">     {{item}} </p>            
+
+                    {% if item == 'Car Rental Management systems'%}
+                        <p style = 'text-indent: 30px;'>
+                            I pray this isnt what they choose for us
+                        </p>
+
+                    {% elif item ==  'Auto Repair Shop Mangement'%}
+                    <p style = 'text-indent: 30px;'>
+                        If we should get this one, we are going to manage am so
+                    </p>
+
+                    {% else %}
+                    <p style = 'text-indent: 30px;'>
+                        Just for the purpose of innovation I pray we get this...
+                    </p>
+
+                    {% endif %}
+               
+           {% endfor %}
+
+           {% for item in proj_dict%}
+           <ul style= 'background-color: mediumturquoise; line-gap-override:2px ;'>
+               <li> Project Id:  <a href="{% url 'projs' item.id %}">    {{item.id}}     </a>   </li>
+               <li>Project Name: {{item.name}}</li>
+                <li>Project Description: {{item.description}}</li>
+                <hr>
+           </ul>
+           {% endfor%}
+           {% endblock content %}
+    </body>
+  
+<!--taking our hyperlink into account, the tag bears the name url to indicate its a link and next arg, its the name of the url as indicated in the
+     url.py file. this is the django way of doing things and the last parameter is the dynamic identifier needed by the url, as dt particular url needs a dynamic identifier-->
+</html>

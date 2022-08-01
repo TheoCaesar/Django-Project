@@ -1,0 +1,44 @@
+<!-- this is a model form-->
+{% extends 'main.html' %}
+
+{% block content%}
+<!--
+    <form method="POST" action = "" >        <!-data included are sent to server with POST Method, the action field is left blank so data is posted to the url of the page that we are in -> 
+        {% csrf_token %}    <!- requirement for security purposes  ->
+        {{tempvar.as_p}}             <!- one way of rendering the model form .. adding the .as_p renders our form in a neat orderly manner->
+
+        <hr>        <!- lets try another way   ->
+
+
+        <hr>
+        
+        <input type="submit"> <!- this is all we need to activate our model forms .... after this we move into project.views->
+
+
+    </form>-->
+    <main class="formPage my-xl">
+        <div class="content-box">
+            <div class="formWrapper">
+                <a class="backButton" href="#"><i class="im im-angle-left"></i></a>
+                <br>
+
+                <form class="form" method="POST" enctype = 'multipart/form-data'> <!-- tutor added the enctype attribute to the form tag and set it to "multipart/form-data"-->
+                    {% csrf_token %}
+
+                    {% for field in tempvar %} <!-- temvar here is our variable for the form in the backend...failed to render as I had this mixed up with something else-->
+                    <!-- Input:Text -->
+                    <div class="form__field">
+                        <label for="formInput#text">{{field.label}} </label>
+                        {{field}}
+                    </div>
+                    {% endfor %}
+
+                    <!-- what we did above placed our fields into the form template... but the styling still lacks substance...to rectify that shit we will have to go into out forms.py file in our apps directory and edit the class-->
+
+                    <input class="btn btn--sub btn--lg  my-md" type="submit" value="Submit" />
+                </form>
+            </div>
+        </div>
+    </main>
+
+{% endblock %}
