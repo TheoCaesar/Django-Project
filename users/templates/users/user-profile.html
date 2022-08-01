@@ -1,0 +1,122 @@
+{% extends 'main.html' %}
+
+{% block content %}
+{{tempvar}}
+
+<!-- Main Section -->
+<main class="profile my-md">
+    <div class="container">
+      <div class="layout">
+        <div class="column column--1of3">
+          <div class="card text-center">
+            <div class="card__body dev">
+              <img class="avatar avatar--xl" src="{{tempvar.profile_image.url}}" />
+              <h2 class="dev__name">{{tempvar.name}}</h2>
+              <p class="dev__title">{{tempvar.short_intro}}</p>
+              <p class="dev__location">{{tempvar.location}}, USA</p>
+              
+              <ul class="dev__social">
+                  <!-- ensure that percent sticks to curly brace and your code is centered, 2 prevent template error-->
+                {% if tempvar.social_github %} <!--- if there is input in social_github field, then render...-->
+                <li>
+                  <a title="Github" href="#" target="_blank"><i class="im im-github"></i></a>
+                </li>
+                {% endif %}
+                
+                {% if tempvar.social_twitter %} <!--- if there is input in social_github field, then render...-->
+                <li>
+                  <a title="Twitter" href="#" target="_blank"><i class="im im-twitter"></i></a>
+                </li>
+                {% endif %}
+                
+                {% if tempvar.social_linkedin %} <!--- if there is input in social_github field, then render...-->              
+                <li>
+                  <a title="LinkedIn" href="#" target="_blank"><i class="im im-linkedin"></i></a>
+                </li>
+                {% endif %}
+
+                {% if tempvar.social_website %} <!--- if there is input in social_github field, then render...-->                
+                <li>
+                  <a title="Personal Website" href="#" target="_blank"><i class="im im-globe"></i></a>
+                </li>
+                {% endif %} <!-- ensure that percent sticks to curly brace and endif is centered, 2 prevent template error-->
+
+              </ul>
+              {% if request.user.profile.id != tempvar.id  %}
+              <a href="{% url 'create_message' tempvar.id %}" class="btn btn--sub btn--lg">Send Message </a>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+        
+        <div class="column column--2of3">
+          <div class="devInfo">
+            <h3 class="devInfo__title">About Me</h3>
+            <p class="devInfo__about">     {{tempvar.bio}}     </p>
+          </div>
+          <div class="devInfo">
+              <!--The Skills is gonna be tough but here we go...-->
+            <h3 class="devInfo__title">Skills</h3>
+            <div class="devInfo__skills">
+              
+                {% for each in temp_defskill %}
+                <div class="devSkill">
+                <h4 class="devSkill__title">{{each}}</h4>
+                <p class="devSkill__info">          {{each.description}}             </p>
+              </div>
+                {% endfor %}
+              
+
+              <h3 class="devInfo__subtitle">Other Skills</h3>
+              <div class="devInfo__otherSkills">
+                  {% for each in temp_otherskill %}
+                <span class="tag tag--pill tag--sub tag--lg">
+                  <small>{{each}}</small>
+                </span>
+                    {% endfor %}
+                
+              </div>
+            </div>
+          </div>
+
+
+          <div class="devInfo">
+            <h3 class="devInfo__title">Projects</h3>
+            <div class="grid grid--two">
+            
+                {% for proj in tempvar.project_set.all %}
+              <div class="column">
+                <div class="card project">
+                  <a href="{% url 'fprojren' proj.id %}" class="project">
+                    <img class="project__thumbnail" src="{{ proj.featured_img.url }}" alt="project thumbnail" />
+                    <div class="card__body">
+                      <h3 class="project__title">{{proj.title}}</h3>
+                      <p><a class="project__author" href="">{{tempvar.name}}</a></p>
+                      <p class="project--rating">
+                        <span style="font-weight: bold;">{{proj.vote_ratio }}%</span> Postitive
+                        Feedback ({{proj.vote_total}} Vote{{proj.vote_total|pluralize:'s'}})
+                      </p>
+                      
+                      <div class="project__tags"> 
+                        {% for tag in proj.tags.all %}
+                        <span class="tag tag--pill tag--main">
+                          <small>{{tag}}</small>
+                        </span>
+                       {% endfor %}
+                      </div>
+                    </div>
+                  </a>
+                </div>
+              </div>
+              {% endfor %}
+
+             
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+{% endblock %}

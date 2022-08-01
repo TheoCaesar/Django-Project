@@ -1,0 +1,110 @@
+{% extends 'main.html' %}
+
+{% block content %}
+  <!-- Main Section -->
+  <main class="settingsPage profile my-md">
+    <div class="container">
+      <div class="layout">
+        <div class="column column--1of3">
+          <div class="card text-center">
+            <div class="card__body dev">
+              <a class="tag tag--pill tag--main settings__btn" href="{% url 'edit_acct' %}"><i class="im im-edit"></i> Edit</a>
+              <img class="avatar avatar--xl dev__avatar" src="tempvar_profile.profile_image.url" />
+              <h2 class="dev__name">{{tempvar_profile.name}}</h2>
+              <p class="dev__title">{{tempvar_profile.short_intro}}</p>
+              <p class="dev__location">Based in {{tempvar_profile.location}}, USA</p>
+              
+              
+              <ul class="dev__social"> <!--22/12/21 we are going to delete the social tags adn copy and paste a smilar one from the user-profile template-->
+                  <!-- from user-profile.html ==> ensure that percent sticks to curly brace and your code is centered, 2 prevent template error-->
+                  {% if tempvar.social_github %} <!--- if there is input in social_github field, then render...-->
+                  <li>
+                    <a title="Github" href="#" target="_blank"><i class="im im-github"></i></a>
+                  </li>
+                  {% endif %}
+                  
+                  {% if tempvar.social_twitter %} <!--- if there is input in social_github field, then render...-->
+                  <li>
+                    <a title="Twitter" href="#" target="_blank"><i class="im im-twitter"></i></a>
+                  </li>
+                  {% endif %}
+                  
+                  {% if tempvar.social_linkedin %} <!--- if there is input in social_github field, then render...-->              
+                  <li>
+                    <a title="LinkedIn" href="#" target="_blank"><i class="im im-linkedin"></i></a>
+                  </li>
+                  {% endif %}
+  
+                  {% if tempvar.social_website %} <!--- if there is input in social_github field, then render...-->                
+                  <li>
+                    <a title="Personal Website" href="#" target="_blank"><i class="im im-globe"></i></a>
+                  </li>
+                  {% endif %} <!-- ensure that percent sticks to curly brace and endif is centered, 2 prevent template error-->
+  
+              </ul>
+
+
+              <!--<a href="#" class="btn btn--sub btn--lg">Send Message </a> no need for a profilee to send itself  a message-->
+            </div>
+          </div>
+        </div>
+        <div class="column column--2of3">
+          <div class="devInfo">
+            <h3 class="devInfo__title">About Me</h3>
+            <p class="devInfo__about"> {{tempvar_profile.bio}}</p>
+          </div>
+          <div class="settings">
+            <h3 class="settings__title">Skills</h3>
+            <a class="tag tag--pill tag--sub settings__btn tag--lg" href="{% url 'create-skill' %}"><i class="im im-plus"></i> Add Skill</a>
+          </div>
+
+          <table class="settings__table">
+            {% for each in tempvar_skill %}
+            <tr>
+              <td class="settings__tableInfo">
+                <h4>{{each.name}}</h4>
+                <p>
+                  {{each.description}}
+                </p> 
+              </td>
+              <td class="settings__tableActions">
+                <a class="tag tag--pill tag--main settings__btn" href="{% url 'update-skill' each.id%}"><i class="im im-edit"></i> Edit</a>
+                <a class="tag tag--pill tag--main settings__btn" href="{% url 'delete-skill' each.id%}"><i class="im im-x-mark-circle-o"></i>
+                  Delete</a>
+              </td>
+            </tr>
+            {% endfor %}
+
+          </table>
+
+          <div class="settings">
+            <h3 class="settings__title">Projects</h3>
+            <a class="tag tag--pill tag--sub settings__btn tag--lg" href="{% url 'createproject' %}"><i class="im im-plus"></i> Add Project</a>
+          </div>
+
+          <table class="settings__table">
+            {% for each in tempvar_project %}
+            <tr>
+              <td class="settings__thumbnail">
+                <a href="{% url 'fprojren' each.id %}"><img src="{{tempvar_project.featured_img.url}} " alt="Project Thumbnail" /></a>
+              </td>
+              <td class="settings__tableInfo">
+                <a href="{% url 'fprojren' each.id %}">{{each.title}}</a>
+                <p>
+                  {{each.description|slice:'150'}} <!--slicing long description to not more than 150 chars-->
+                </p>
+              </td>
+              <td class="settings__tableActions">
+                <a class="tag tag--pill tag--main settings__btn" href="{% url 'updateproject' each.id %}"><i class="im im-edit"></i> Edit</a>
+                <a class="tag tag--pill tag--main settings__btn" href="{% url 'deleteproject' each.id %}"><i class="im im-x-mark-circle-o"></i>
+                  Delete</a>
+              </td>
+            </tr>
+           {% endfor %}
+          </table>
+        </div>
+      </div>
+    </div>
+  </main>
+
+{% endblock %}

@@ -1,0 +1,130 @@
+<!--This particular template will serve both as our register and login, but first we'll illustrate the login
+Step 1: extend main and insert block tags   -->
+{% extends 'main.html' %}
+{% load static %}
+{% block content %}
+
+
+{% if tempvar_pagetype == 'register' %}
+<!--
+    <h1>Registration Page</h1>
+
+    <form action="{% url 'registerlink' %}" method  = "POST">
+        {% csrf_token %} <!- for security->
+        {{tempvar_form.as_p}}
+        <input type = "Submit" value = "Register User">
+    </form>
+
+    <p>Already have an account? <a href="{% url 'loginlink' %}" > Login</a></p>
+-->
+    <!-- 22.12.21 14:31 -->
+    <div class="auth">
+        <div class="card">
+          <div class="auth__header text-center">
+            <a href="/">
+              <img src="{% static 'images/icon.svg' %}" alt="icon" />
+            </a>
+            <h3>Account SignUp</h3>
+            <p>Create a new developer account</p>
+          </div>
+  
+          <form action="{% url 'registerlink' %}" method  = "POST" class="form auth__form">
+            {% csrf_token %}
+
+                    {% for field in tempvar_form %}
+                     <!-- Input:Text -->
+                        <div class="form__field">
+                        <label for="formInput#text">{{field.label}}</label>
+                        {{field}}
+                        
+                        {% if field.help_text %}
+                        <small>{{field.help_text}}</small> <!--small tags display text in small sizes-->
+                        {% endif %}
+
+                        {% for error in field.error %}
+                        <p style = color:red> {{error}} </p> 
+                        {% endfor %}
+                    
+                        </div>
+
+                    {% endfor %}
+
+           
+            <div class="auth__actions"> 
+              <input class="btn btn--sub btn--lg" type="submit" value="Sign  In" />
+            </div>
+          </form>
+          <div class="auth__alternative">
+            <p>Already have an Account?</p>
+            <a href="{%url 'loginlink'%}">Log In</a>
+          </div>
+        </div>
+      </div>
+{% else %}
+    <!--
+    <!- Step 2: build some form of a form, remember we're sending data with Post method so we'll need a csrf token--
+    <form action="{% url 'loginlink' %}" method="POST"> <!- for now we leave the action field blank till we configure the urls ->
+        {% csrf_token %}
+        <input type = 'text' name = 'username' placeholder="Enter Username" \>
+        <input type = 'password' name = 'password' placeholder="Enter Password" >
+        <input type = 'submit' value="Login">
+    
+    <p> Don't have an account? <a href= "{% url 'registerlink' %}"> Sign Up</a>></p>
+    </form>
+-->
+    <!-- 22/12/21 13:37 -->
+   <div class="auth">
+      <div class="card">
+        <div class="auth__header text-center">
+          <a href="/">
+            <img src="{% static 'images/icon.svg' %}" alt="icon" />
+          </a> 
+          <h3>Account Login</h3>
+          <p>Hello Developer, Welcome Back!</p>
+        </div>
+
+        <!-- <form action="{% url 'loginlink' %}" method="POST" class="form auth__form"> -->
+          <form action="" method="POST" class="form auth__form">
+            {% csrf_token %}
+ 
+            <!-- Input:Email  this will be our username -->
+          <div class="form__field">
+            <label for="formInput#text">Username: </label>
+            <input
+              class="input input--text"
+              id="formInput#text"
+              type="text"
+              name="username"
+              placeholder="Enter your username..."
+            />
+          </div>
+
+          <!-- Input:Password -->
+          <div class="form__field">
+            <label for="formInput#password">Password: </label>
+            <input
+              class="input input--password"
+              id="formInput#passowrd"
+              type="password"
+              name="password"
+              placeholder="••••••••"
+            />
+          </div>
+          <div class="auth__actions">
+            <input class="btn btn--sub btn--lg" type="submit" value="Log In" />
+            <a href="{% url 'reset_password' %}">Forget Password?</a>
+          </div>
+        </form>
+        <div class="auth__alternative">
+          <p>Don’t have an Account?</p>
+          <a href="{% url 'registerlink' %}">Sign Up</a>
+        </div>
+      </div>
+    </div>
+{% endif %}
+
+
+{% endblock content %}
+
+<!--Step 3 move into our views.py and set a function to render this html, plus a link which will be slotted 
+    into our form action attribute-->

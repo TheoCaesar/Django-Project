@@ -1,0 +1,35 @@
+{% extends 'main.html' %}
+
+{% block content %}
+  <!-- Main Section -->
+  <main class="inbox my-xl">
+    <div class="content-box">
+      
+      <!-- <h3 class="inbox__title">New Messages(<span>2</span>)</h3> -->
+      <h3 class="inbox__title">New Messages(<span>{{temp_unreadCount}}</span>)</h3>
+
+      <ul class="messages"> 
+        {% for each_msg in temp_messageRequests %}
+
+        {% if each_msg.is_read == False %}
+        <li class="message message--unread">
+          {% else %}
+          <li class="message">    <!-- we deliberately commented out this closing tag</li> -->
+          {% endif %}
+          <a href="{% url 'read_message' each_msg.id %}">
+            <!-- <span class="message__author">Dennis Ivanov</span> -->
+            <span class="message__author">{{each_msg.name}}</span>
+
+            <!-- <span class="message__subject">Working Opportunity for Web Design Company</span> -->
+            <span class="message__subject">{{each_msg.subject}}</span>
+
+            <!-- <span class="message__date">May 31, 2021, 04:37 PM</span> -->
+            <span class="message__date">{{each_msg.created}}</span>
+
+          </a>
+        </li>
+       {% endfor %}
+      </ul>
+    </div>
+  </main>
+  {% endblock content %}

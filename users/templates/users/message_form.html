@@ -1,0 +1,53 @@
+{% extends 'main.html'  %}
+
+{% block content %}
+<main class="formPage my-xl">
+    <div class="content-box">
+        <div class="formWrapper">
+            <!-- <a class="backButton" href="#"><i class="im im-angle-left"></i></a> -->
+            <a class="backButton" href="{% url 'user_profile_link' tempvar_recepient.id %}"><i class="im im-angle-left"></i></a>
+
+            <br>
+
+            <form class="form" method="POST">
+                {% csrf_token %}
+
+                {% if request.user.is_authenticated == False %}   <!--in case user is an unauthenticated , we want them to add their name & email-->
+                <!-- Input:Text -->
+                <div class="form__field">
+                    <label for="formInput#text">{{tempvar_form.name.label}}</label>
+                    <!-- <input class="input input--text" id="formInput#text" type="text" name="text" placeholder="Enter text" /> -->
+                    {{tempvar_form.name}}
+                </div>
+
+                <!-- Input:Text -->
+                <div class="form__field">
+                    <label for="formInput#text">{{tempvar_form.email.label}}</label>
+                    <!-- <input class="input input--text" id="formInput#text" type="text" name="text" placeholder="Enter text" /> -->
+                    {{tempvar_form.email}}
+                </div>
+                {% endif %}
+
+                <!-- these fields below are rendered irrespective if user is authenticated or not...    -->
+                
+                <!-- Input:Text -->
+                <div class="form__field">
+                    <label for="formInput#text">{{tempvar_form.subject.label}}</label>
+                    <!-- <input class="input input--text" id="formInput#text" type="text" name="text" placeholder="Enter text" /> -->
+                    {{tempvar_form.subject}}
+                </div>
+                
+                <!-- Input:Text -->
+                <div class="form__field">
+                    <label for="formInput#text">{{tempvar_form.body.label}}</label>
+                    <!-- <input class="input input--text" id="formInput#text" type="text" name="text" placeholder="Enter text" /> -->
+                    {{tempvar_form.body}}
+                </div>
+                
+                <input class="btn btn--sub btn--lg  my-md" type="submit" value="Submit" />
+            </form>
+        </div>
+    </div>
+</main>
+
+{% endblock content %}

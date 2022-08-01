@@ -1,0 +1,70 @@
+{% extends 'main.html' %}
+
+{% block content %}
+<h1> {{tempvar}}</h1>
+
+<!--users app rendering profiles 17/11/21 10:23-->
+  <!-- Main Section -->
+  <main class="home">
+    <section class="hero-section text-center">
+      <div class="container container--narrow">
+        <div class="hero-section__box">
+          <h2>CONNECT WITH <span>DEVELOPERS</span></h2>
+          <h2>FROM AROUND THE WORLD</h2>
+        </div>
+
+        <div class="hero-section__search">
+          <form id = 'searchForm' class="form" action="{% url 'profiles_link' %}" method="get">
+            <div class="form__field">
+              <label for="formInput#search">Search Developers </label>
+              <input class="input input--text" id="formInput#search" type="text"  name="search_query"
+                placeholder="Search by developer name" value = {{tempvar_search_query}} >
+            </div>
+
+            <input class="btn btn--sub btn--lg" type="submit" value="Search" />
+          </form> 
+        </div>
+      </div>
+    </section>
+    <!-- Search Result: DevList -->
+    <section class="devlist">
+      <div class="container">
+        <div class="grid grid--three">
+          
+            <!-- deleted all but one column card -->
+            {% for each in tempvar %}
+          <div class="column card">
+            <div class="dev">
+ <!--HERE --> <a href="{% url 'user_profile_link' each.id %}" class="card__body">   <!--WHERE WE LINK IT-->
+                <div class="dev__profile">
+                  <img class="avatar avatar--md" src="{{each.profile_image.url}}" alt="image" />
+                  <div class="dev__meta">
+                    <h3>{{each.name}}</h3>
+                    <h5>{{each.short_intro | slice:'60'}}</h5> 
+                    <!--applied a pipe and added the slice method to show only 60chars -->
+                  </div>
+                </div>
+                
+                <p class="dev__info">   {{each.bio | slice:'150'}}  </p> <!--slices to 150 chars-->
+                <div class="dev__skills">
+                    {% for i in each.skill_set.all|slice:'5' %} <!--notice that this is an inner loop with the outer loop variable each -->
+                  <span class="tag tag--pill tag--main">
+                    <small>{{i}}</small>
+                  </span>
+                    {% endfor %}
+                  
+                </div>
+              </a>
+            </div>
+          </div>
+          {% endfor %}
+
+        </div>
+      </div>
+    </section>
+
+    {% include 'pagination.html' with queryset=tempvar custom_range=tempvar_custom_range%}
+  <!--custom_range on the left is from the loop in pagination template and is assigned a value of the template variable from the views-->
+  </main>
+
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends 'main.html' %}
+
+{% block content %}
+ <!--step 5 == comment out the original-->
+<!-- <h1> Edit Account </h1>
+<form action="{% url 'edit_acct' %}" method = "POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <!- rest to be handled by model forms->
+    {{tempvar_form.as_p}}
+    <input type="submit" value="Submit">
+</form> -->
+
+ <!-- Main Section -->
+ <main class="formPage my-xl">
+    <div class="content-box">
+        <div class="formWrapper">
+            <!--step 4--> <a class="backButton" href="{% url 'useraccount' %}"> <i class="im im-angle-left"></i></a>
+            <br>
+          
+            <!--step 1--><form class="form" action="{% url 'edit_acct' %}" method = "POST" enctype="multipart/form-data">
+            <!--step 2-->    {% csrf_token %}
+
+            <!--step 3a--> {% for field in tempvar_form %}
+                             <!-- Input:Text -->
+                            <div class="form__field">
+                                <!--step 3a(i)-->   <label for="formInput#text">{{field.label}} </label>
+                                <!--step 3a(ii)-><input class="input input--text" id="formInput#text" type="text" name="text" placeholder="Enter text" />-->
+                                 <!--step 3a(iii)--> {{field}}
+                            </div>
+            <!--step 3b--> {% endfor %}
+                <input class="btn btn--sub btn--lg  my-md" type="submit" value="Submit" />
+            </form>
+        </div>
+    </div>
+</main>
+
+{% endblock %}
